@@ -1,0 +1,139 @@
+# config.yaml
+
+# 00_rawdatamerge.R
+## 原始数据目录
+rawdatadir: "data/Skin"
+
+## 组织类型
+tissues: "skin"
+
+## 组学类型
+omics: "ScRNA&IR"
+
+## 项目名称
+projectname: "Graduation_project"
+
+## 输出结果
+output:
+  figure: "figure_out/01.QC/integrated.pdf"
+  result: "result_out/01.QC/2.raw.Rdata"
+  
+# 01_scRNA.QC.R
+## 物种
+species: "human"
+
+## 分组信息
+group: "condition"
+
+## 单细胞过滤参数
+subsets_param:
+  nFeature_RNA_min: 50
+  nFeature_RNA_max: 4000
+  percent_mt_max: 25
+## 输出结果
+output1: 
+  figure1: "figure_out/01.QC/0.raw.vlnplot.png"
+  figure2: "figure_out/01.QC/1.farture.ncount.mt.scatter.png"
+  figure3: "figure_out/01.QC/2.QC.vlnplot.png"
+  figure4: "figure_out/01.QC/3.QC.farture.ncount.mt.scatter.png"
+  result1: "result_out/01.QC/3.QC.Rdata"
+
+# 02_0_cluster.R
+## 疾病状态
+#condition: 
+#  - DLE
+#  - HC
+
+## 输出结果
+output2:
+  figure1: "figure_out/02.cluster/01.PCA.dim.pdf"
+  figure2: "figure_out/02.cluster/02.PCA.heatmap.pdf"
+  figure3: "figure_out/02.cluster/03.Determine_PCnums.pdf"
+  figure4: "figure_out/02.cluster/04.Visualization.cluster.png"
+  figure5: "figure_out/02.cluster/05.Visualization.cluster.by.ident.pdf"
+  figure6: "figure_out/02.cluster/06.top10.VF.pdf"
+  figure7: "figure_out/02.cluster/07.Marker.heatmap.pdf"
+  result1: "result_out/02.cluster/cell_cluster.csv"
+  result2: "result_out/02.cluster/embed_umap.csv"
+  result3: "result_out/01.QC/4.Dle_b1.inter.cluster.Rdata"
+  result4: "result_out/02.cluster/cluster.markers.csv"
+  result5: "result_out/02.cluster/cluster.markers.top10.csv"
+  result6: "result_out/02.cluster/cluster.markers_row.csv"
+  result7: "result_out/01.QC/5.Dle_b1.cluster.Rdata"
+
+# 03_0_cellmarkerplot.R
+## 单细胞注释marker
+anno_blood_level1: "db/immune_Cell_markers.xls"
+
+## 输出结果
+output3:
+  figure1: "figure_out/03.celltype/0.manual_all_marker_heatmap.pdf"
+  figure2: "figure_out/03.celltype/1.manual_single_marker_heatmap.pdf"
+
+# 04_0_cellanno.R
+## 输出结果
+output4:
+  figure1: "figure_out/03.celltype/2.cellplot.pdf"
+  result1: "result_out/03.celltype/0.singleR_cellplot.csv"
+  result2: "result_out/01.QC/6.Dle_b1.celltype.Rdata"
+
+# 04_1_cellanno_check.R
+## 输出结果
+output5:
+  figure1: "figure_out/03.celltype/3.cellplot.manual_L1.pdf"
+  result1: "result_out/01.QC/7.Dle_b1.celltype.check.Rdata"
+
+# 05_0_subsetcell.R
+## 髓系细胞亚群
+subcell: 
+  Myeloid_cells: "Myeloid_cells"
+
+## 输出结果
+output6:
+  result1: "result_out/01.QC/8.subset_Myeloid_cells.Rdata"
+
+# 06_0_subset.R
+## 髓系细胞单细胞过滤参数
+Myeloid_cells_subsets_param:
+  nFeature_RNA_min: 50
+  nFeature_RNA_max: 6000
+  percent_mt_max: 30
+
+## 髓系细胞单细胞pca选择参数
+Myeloid_cells_pca_param: 20
+
+## 输出结果
+output7:
+  figure1: "figure_out/04.subcell/01.QC/0.raw.vlnplot.png"
+  figure2: "figure_out/04.subcell/01.QC/1.farture.ncount.mt.scatter.png"
+  figure3: "figure_out/04.subcell/01.QC/2.QC.vlnplot.png"
+  figure4: "figure_out/04.subcell/01.QC/3.QC.farture.ncount.mt.scatter.png"
+  figure5: "figure_out/04.subcell/01.QC/4.Elbowplot.pdf"
+  result1: "result_out/04.subcell/02.cluster/1.Myeloid_cells.cluster.Rdata"
+
+# 08_0_marker_anno_find.R
+## 单细胞注释marker
+anno_level2: "db/immune_Cell_markers.xls"
+anno_marker_table: "Sheet7"
+
+
+# 07_0_subcellanno.R
+## 髓系细胞分群分辨度(用cloupe才需要重新对齐清晰度)
+#res: "SCT_snn_res.0.4"
+
+## 髓系细胞亚群分群注释
+newcluster: "result_out/04.subcell/03.celltype/Myeloid_cells_subcell_anno.csv"
+
+## 输出结果
+output8:
+  figure1: "figure_out/04.subcell/04.annotation/1.cellplot.manual_L2.pdf"
+  result1: "result_out/04.subcell/02.cluster/2.Myeloid_cells.cluster.anno.Rdata"
+
+# 09_0_plot_all.R
+## 关注的基因
+#special_gene: 
+#  - "C5AR1"
+#  - "C5AR2"
+
+## 图片存放地址
+pfig_path: "figure_out/04.subcell/04.annotation"

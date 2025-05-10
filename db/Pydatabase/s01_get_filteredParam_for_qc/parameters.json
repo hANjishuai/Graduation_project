@@ -1,0 +1,5 @@
+{
+    "n_genes_max": 7500,
+    "mt_pct_max": 18,
+    "min_gene_count": 3
+}

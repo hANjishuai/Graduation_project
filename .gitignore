@@ -1,0 +1,8 @@
+.snakemake
+data/Skin
+figure_out/
+result_out/
+run.log
+output/
+src/*.ipynb
+src/readme.*
