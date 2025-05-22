@@ -101,7 +101,7 @@ process_seurat <- function(seurat_obj, dims, species, elbow_path) {
   message("[6/7] Running PCA and Harmony integration")
   seurat_obj <- RunPCA(seurat_obj, verbose = FALSE)
   p_elbow <- ElbowPlot(seurat_obj)
-  ggsave(elbow_path, p_elbow, width = 8, height = 6)
+  ggsave(elbow_path[[1]], p_elbow, width = 8, height = 6)
   seurat_obj <- RunHarmony(seurat_obj, "orig.ident")
   
   message("[7/7] Clustering with dims=1:", dims)
@@ -129,7 +129,8 @@ process_seurat_pipeline <- function(input_rds, output_rds, config) {
   generate_qc_plots(seurat_filtered, config$output_figures[3:4])
   
   # 数据处理与保存
-  seurat_processed <- process_seurat(seurat_filtered, config$dims, config$species, config$output_figures)
+  seurat_processed <- process_seurat(seurat_filtered, config$dims,
+   config$species, config$output_figures[5])
   saveRDS(seurat_processed, output_rds)
   message("\n✓ Pipeline completed. Output saved to: ", output_rds)
 }
@@ -147,12 +148,12 @@ if (exists("snakemake")) {
       nFeature_RNA_max = as.integer(params$subsets$nFeature_RNA_max),
       percent_mt_max = as.numeric(params$subsets$percent_mt_max)
     ),
-    output_figures = snakemake@config$output_figures
+    output_figures = snakemake@output[-1]
   )
   
   # 确保目录存在
   dir.create(dirname(snakemake@output$rds), recursive = TRUE, showWarnings = FALSE)
-  dir.create(dirname(config$output_figures$vln_raw), recursive = TRUE, showWarnings = FALSE)
+  dir.create(dirname(snakemake@output$vln_raw), recursive = TRUE, showWarnings = FALSE)
   
   # 调用主函数
   process_seurat_pipeline(

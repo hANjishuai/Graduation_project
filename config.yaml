@@ -1,13 +1,19 @@
 # config.yaml
 
 # 01_process_DR_Cluster
+
+# 定义可替换的变量（想要进行流程的细胞类型）
+celltype: "celltype_B"  # 可改为 celltype_B、celltype_T 等
+#也可在命令行指定通配符：snakemake --config celltype=celltype_B all_process_DR_Cluster
+
+
 # 输入输出路径
 input:
-  seurat: "output/s07_scanpy2seurat/celltype_ker/subcell.rds"
+  seurat: "output/s07_scanpy2seurat/{celltype}/subcell.rds"
 
 output:
-  result: "result_out/01_process_DR_Cluster/celltype_ker/subcell.rds"
-  figures: "figure_out/01_process_DR_Cluster/celltype_ker/"
+  result: "result_out/01_process_DR_Cluster/{celltype}/subcell.rds"
+  figures: "figure_out/01_process_DR_Cluster/{celltype}/"
 
 # 处理参数
 params:
@@ -15,14 +21,14 @@ params:
   dims: 20  # 不要引号
   subsets:
     nFeature_RNA_min: 50  # 不要引号
-    nFeature_RNA_max: 7500
-    percent_mt_max: 5  # 不要引号
+    nFeature_RNA_max: 3500
+    percent_mt_max: 8  # 不要引号
 
 # 图表文件名配置
 output_figures:
-  vln_raw: "figure_out/01_process_DR_Cluster/celltype_ker/vln_raw.png"
-  scatter_raw: "figure_out/01_process_DR_Cluster/celltype_ker/scatter_raw.png"
-  vln_qc: "figure_out/01_process_DR_Cluster/celltype_ker/vln_qc.png"
-  scatter_qc: "figure_out/01_process_DR_Cluster/celltype_ker/scatter_qc.png"
-  elbow: "figure_out/01_process_DR_Cluster/celltype_ker/elbow.pdf"
+  vln_raw: "figure_out/01_process_DR_Cluster/{celltype}/vln_raw.png"
+  scatter_raw: "figure_out/01_process_DR_Cluster/{celltype}/scatter_raw.png"
+  vln_qc: "figure_out/01_process_DR_Cluster/{celltype}/vln_qc.png"
+  scatter_qc: "figure_out/01_process_DR_Cluster/{celltype}/scatter_qc.png"
+  elbow: "figure_out/01_process_DR_Cluster/{celltype}/elbow.png"
 
