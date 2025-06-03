@@ -1,5 +1,6 @@
 configfile: "config.yaml"
 
+# seurat亚群指控，分群聚类
 rule all_process_DR_Cluster:
     input:
         rds = config["output"]["result"].format(celltype=config["celltype"]),
@@ -25,3 +26,15 @@ rule process_DR_Cluster:
         subsets = config["params"]["subsets"]
     script:
         "pipeline/01_process_DR_Cluster.R"
+    
+# 单细胞免疫组库可视化流程
+rule process_scRepertoire:
+    input: 
+        rawdatadir = config["input02"]["contig"].format(group=config["group"])
+    output:
+        output_dir = directory(config["output02"]["result"].format(group=config["group"])),
+        visual_output_dir = directory(config["output02"]["figures"].format(group=config["group"]))
+    params:
+        parallel = config["params02"]["parallel"]
+    script:
+        "pipeline/02_process_scRepertoire.R"

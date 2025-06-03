@@ -1,8 +1,10 @@
 .snakemake
-data/Skin
+data/
 figure_out/
 result_out/
 run.log
 output/
 src/*.ipynb
 src/readme.*
+test/
+pipeline/test.R

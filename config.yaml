@@ -6,7 +6,6 @@
 celltype: "celltype_B"  # 可改为 celltype_B、celltype_T 等
 #也可在命令行指定通配符：snakemake --config celltype=celltype_B all_process_DR_Cluster
 
-
 # 输入输出路径
 input:
   seurat: "output/s07_scanpy2seurat/{celltype}/subcell.rds"
@@ -31,4 +30,21 @@ output_figures:
   vln_qc: "figure_out/01_process_DR_Cluster/{celltype}/vln_qc.png"
   scatter_qc: "figure_out/01_process_DR_Cluster/{celltype}/scatter_qc.png"
   elbow: "figure_out/01_process_DR_Cluster/{celltype}/elbow.png"
+
+# 02_process_scRepertoire
+
+# 定义可替换的变量（想要进行流程的分组信息）
+group: "SLE_IR" #Skin_IR、Blood_IR、DLE_IR、SLE_IR
+
+# 输入输出路径
+input02: 
+  contig: "data/{group}"
+
+output02: 
+  result: "result_out/02_process_scRepertoire/{group}"
+  figures: "figure_out/02_process_scRepertoire/{group}"
+
+# 处理参数
+params02:
+  parallel: "TRUE"
 
