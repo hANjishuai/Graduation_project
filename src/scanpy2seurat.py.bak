@@ -133,18 +133,18 @@ def inspect_anndata(adata):
 # 核心功能函数
 # --------------------------
 # 修改数据源选择逻辑
-def check_raw_data(adata):
-    """优先使用保存的原始计数"""
-    # 关键修改：优先使用layers['counts']
-    if 'counts' in adata.layers:
-        click.echo("✅ 使用保存的原始计数数据")
-        return adata.layers['counts'], adata.var
-    elif adata.raw is not None:
-        click.echo("⚠️ 使用adata.raw作为计数（非原始整数）")
-        return adata.raw.X, adata.raw.var
-    else:
-        log_warning("⚠️ 未找到原始数据，使用当前矩阵")
+def check_raw_data(adata, use_raw):
+    if adata.raw is None:
         return adata.X, adata.var
+    else:
+        if use_raw:  # 自动确认逻辑
+            click.echo("✅ 自动选择原始基因数据")
+            return adata.raw.X, adata.raw.var
+        else:
+            if click.confirm("是否使用原始完整基因数据？", default=True):
+                return adata.raw.X, adata.raw.var
+            else:
+                return adata.X, adata.var
 
 def save_sparse_matrix(matrix, genes, output_dir):
     """保存表达矩阵"""
@@ -182,7 +182,8 @@ def save_reductions(adata, output_dir, reductions):
 @click.option("--input_h5ad", required=True, help="输入AnnData文件路径 (.h5ad)")
 @click.option("--output_dir", required=True, help="输出目录路径")
 @click.option("--reductions", default="X_pca,X_umap", help="逗号分隔的降维坐标名称")
-def main(input_h5ad, output_dir, reductions):
+@click.option("--use_raw", is_flag=True, help="自动使用原始基因数据")  # 新增参数
+def main(input_h5ad, output_dir, reductions, use_raw):
     # 初始化
     log_header("单细胞数据转换流程启动")
     click.echo(f"🕒 开始时间: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
@@ -195,7 +196,7 @@ def main(input_h5ad, output_dir, reductions):
     
     # 数据源确认
     log_header("步骤2/4: 数据源选择")
-    matrix, gene_meta = check_raw_data(adata)
+    matrix, gene_meta = check_raw_data(adata, use_raw)
     
     # 创建输出目录
     log_header("步骤3/4: 准备输出")

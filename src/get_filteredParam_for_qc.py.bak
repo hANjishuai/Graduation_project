@@ -137,11 +137,6 @@ def main(input, output, params, plot_dir, n_genes_max, mt_pct_max, min_gene_coun
         load_start = time.time()
         
         adata = sc.read(input)
-
-       # 关键修改：保存原始计数到layers['counts']
-        if 'counts' not in adata.layers:
-            adata.layers['counts'] = adata.X.copy()
-            click.echo("✅ 原始计数已保存到adata.layers['counts']")
         rsc.get.anndata_to_GPU(adata)
         
         load_time = time.time() - load_start

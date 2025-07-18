@@ -122,13 +122,6 @@ create_seurat <- function(sc_data) {
     meta.data = sc_data$metadata,
     assay = "RNA"
   )
-  # 关键修改：添加计数到数据层
-  seu[["RNA"]] <- SetAssayData(
-    seu[["RNA"]], 
-    slot = "counts", 
-    new.data = sc_data$counts
-  )
-  log_success(glue("原始计数已保存到counts层"))
   log_success(glue("初始化对象: {ncol(seu)}细胞 x {nrow(seu)}基因"))
   
   # 添加降维数据

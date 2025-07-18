@@ -150,12 +150,6 @@ def main(input, output, params, plot_dir, n_pcs, n_top_genes, copy_params):
         # === 数据加载 ===
         click.echo("\n📥 正在加载数据...")
         adata = sc.read(input)
-        # 关键修改：确保原始计数存在
-        if 'counts' not in adata.layers:
-            click.echo("⚠️ 警告：未找到原始计数，使用当前矩阵作为计数")
-            adata.layers['counts'] = adata.X.copy()
-        else:
-            click.echo("✅ 原始计数已加载")
         rsc.get.anndata_to_GPU(adata)
         click.echo(f"✅ 初始数据维度：{adata.shape}")
 

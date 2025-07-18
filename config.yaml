@@ -17,10 +17,10 @@ output:
 # 处理参数
 params:
   species: "human"
-  dims: 20  # 不要引号
+  dims: 12 # 不要引号
   subsets:
     nFeature_RNA_min: 50  # 不要引号
-    nFeature_RNA_max: 3500
+    nFeature_RNA_max: 1000
     percent_mt_max: 8  # 不要引号
 
 # 图表文件名配置
@@ -47,4 +47,74 @@ output02:
 # 处理参数
 params02:
   parallel: "TRUE"
+
+# 03_process_NMF_Enrichment
+# 输入输出路径
+input03:
+  seurat: "output/s07_scanpy2seurat/{celltype}/subcell.rds"
+
+output03:
+  result: "result_out/03_process_NMF_Enrichment/{celltype}/nmf_seurat.rds"
+  nmf_model: "result_out/03_process_NMF_Enrichment/{celltype}/nmf_initial.rds"
+  final_model: "result_out/03_process_NMF_Enrichment/{celltype}/nmf_final.rds"
+  rank_plot: "figure_out/03_process_NMF_Enrichment/{celltype}/rank_estimate.pdf"
+  enrich_dir: "result_out/03_process_NMF_Enrichment/{celltype}/enrichment/"
+
+# 处理参数
+params03:
+  species: "human"
+  rank_start: 7
+  rank_stop: 8
+  rank_step: 1
+  nrun: 15
+  topN: 100
+  resolution: 0.2
+  # 可选：已有的NMF结果路径（用于跳过NMF计算）
+  existing_nmf_model: null #"result_out/03_process_NMF_Enrichment/{celltype}/nmf_initial.rds"
+  existing_final_nmf: null #"result_out/03_process_NMF_Enrichment/{celltype}/nmf_final.rds"
+
+# 04_process_runGSVA.R
+output04:
+  gsva_result_dir: "result_out/04_process_runGSVA/{celltype}"
+  gsva_plot_dir: "figure_out/04_process_runGSVA/{celltype}"
+
+params04:
+  species: "human"
+  top_n: 10  # 每个cluster使用富集分析的前10个通路进行GSVA
+
+# 05_plots_nmfAnno_enrichment.R
+input05:
+  seurat: "result_out/03_process_NMF_Enrichment/{celltype}/nmf_seurat.rds"
+  pathway_df: "result_out/03_process_NMF_Enrichment/{celltype}/enrichment/top_pathways_per_cluster.csv"
+  color_palette: "db/Rdatabase/05_plots_nmfAnno_enrichment/default_colors.csv"
+
+output05:
+  output_dir: "result_out/05_plots_nmfAnno_enrichment/celltype_B"
+  output_plot_dir: "figure_out/05_plots_nmfAnno_enrichment/celltype_B"
+
+params05: 
+  species: "human"
+  top_n: 10
+  base_dir: "result_out/04_process_runGSVA/{celltype}"
+  
+# 06_process_Build_Geneset.R
+# 基因集构建配置
+input06:
+  # 自定义基因集文件路径
+  custom_tsv: "db/Rdatabase/06_process_Build_Geneset/custom_gene_sets.tsv"  
+
+output06:
+  gmt_files_dir: "result_out/06_process_Build_Geneset/{celltype}"
+
+params06:
+  # KEGG通路ID列表 (不带hsa前缀)
+  kegg_ids: ["05323", "04940", "05169"]
+  
+  # GO ID列表
+  go_ids: ["GO:0002449", "GO:0002460", "GO:0002443"]
+  
+  # 物种
+  species: "human"
+
+
 
