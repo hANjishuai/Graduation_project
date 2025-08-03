@@ -89,14 +89,14 @@ input05:
   color_palette: "db/Rdatabase/05_plots_nmfAnno_enrichment/default_colors.csv"
 
 output05:
-  output_dir: "result_out/05_plots_nmfAnno_enrichment/celltype_B"
-  output_plot_dir: "figure_out/05_plots_nmfAnno_enrichment/celltype_B"
+  output_dir: "result_out/05_plots_nmfAnno_enrichment/{celltype}"
+  output_plot_dir: "figure_out/05_plots_nmfAnno_enrichment/{celltype}"
 
 params05: 
   species: "human"
   top_n: 10
   base_dir: "result_out/04_process_runGSVA/{celltype}"
-  
+
 # 06_process_Build_Geneset.R
 # 基因集构建配置
 input06:
@@ -108,13 +108,30 @@ output06:
 
 params06:
   # KEGG通路ID列表 (不带hsa前缀)
-  kegg_ids: ["05323", "04940", "05169"]
+  kegg_ids: ["05323", "04662", "04620", "05322"]
   
   # GO ID列表
-  go_ids: ["GO:0002449", "GO:0002460", "GO:0002443"]
-  
+  go_ids: ["GO:0002200","GO:0016445","GO:0002208","GO:0015980","GO:0097009","GO:0006112","GO:0042113","GO:0002312","GO:0001783","GO:0035754","GO:0030183","GO:0001782","GO:0019724","GO:0042100","GO:0002322","GO:0050853","GO:0001788","GO:0019732","GO:0061760","GO:0019882","GO:0048006","GO:0019883","GO:0002483","GO:0002484","GO:0019884","GO:0002478"]
+
+
   # 物种
   species: "human"
 
+# 07_process_scoreGSVA.R
+input07:
+  gmt_file: "result_out/06_process_Build_Geneset/{celltype}/all_gene_sets.gmt"
+  seurat_rds: "result_out/03_process_NMF_Enrichment/{celltype}/nmf_seurat.rds"
+
+output07:
+  GSVA_files_dir: "result_out/07_process_scoreGSVA/{celltype}"
+  GSVA_plots_dir: "figure_out/07_process_scoreGSVA/{celltype}"
+
+# 08_plots_interestPathway.R
+output08:
+  prism_files_dir: "result_out/08_plots_interestPathway/{celltype}"
+  prism_plots_dir: "figure_out/08_plots_interestPathway/{celltype}"
 
 
+params08:
+  target_group: "NMF_Cluster_5"
+#  target_pathway: "leukocyte.mediated.immunity" #make.names后的名字

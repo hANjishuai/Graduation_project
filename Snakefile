@@ -135,4 +135,44 @@ rule build_gene_sets:
     script:
         "pipeline/06_process_Build_Geneset.R"
 
+# NMF亚群对感兴趣的通路进行可视化（热图）
+rule all_scoreGSVA:
+    input:
+        expand("result_out/07_process_scoreGSVA/{celltype}/gene_sets_completed.txt", 
+               celltype=config["celltype"])
+
+rule scoreGSVA:
+    input:
+        gmt_file = config["input07"]["gmt_file"],
+        seurat_rds = config["input07"]["seurat_rds"]
+    output:
+        touch("result_out/07_process_scoreGSVA/{celltype}/gene_sets_completed.txt")
+    params:
+        output_dir = config["output07"]["GSVA_files_dir"],
+        output_plot_dir = config["output07"]["GSVA_plots_dir"]
+    script:
+        "pipeline/07_process_scoreGSVA.R"
+
+# NMF亚群对感兴趣的通路进行prism统计分析
+rule all_prism_interestPathway:
+    input:
+        expand("result_out/08_plots_interestPathway/{celltype}/gene_sets_completed.txt", 
+               celltype=config["celltype"])
+
+rule prism_interestPathway:
+    input:
+        gmt_file = config["input07"]["gmt_file"],
+        seurat_rds = config["input07"]["seurat_rds"]
+    output:
+        touch("result_out/08_plots_interestPathway/{celltype}/gene_sets_completed.txt")
+    params:
+        output_dir = config["output08"]["prism_files_dir"],
+        output_plot_dir = config["output08"]["prism_plots_dir"],
+#        target_pathway = config["params08"]["target_pathway"],
+        target_group = config["params08"]["target_group"]
+    script:
+        "pipeline/08_plots_interestPathway.R"
+
+
+
 
