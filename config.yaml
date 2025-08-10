@@ -131,7 +131,6 @@ output08:
   prism_files_dir: "result_out/08_plots_interestPathway/{celltype}"
   prism_plots_dir: "figure_out/08_plots_interestPathway/{celltype}"
 
-
 params08:
   target_group: "NMF_Cluster_5"
 #  target_pathway: "leukocyte.mediated.immunity" #make.names后的名字

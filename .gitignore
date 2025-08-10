@@ -6,5 +6,8 @@ run.log
 output/
 src/*.ipynb
 src/readme.*
-test/
+test/a*
+test/d*
+test/r*
+test/"
 pipeline/test.R
