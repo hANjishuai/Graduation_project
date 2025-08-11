@@ -204,3 +204,5 @@ chmod +x ./workflow/workflow_p11.sh
 watch free
 htop
 """
+
+# 转到"./src/pipeline.sh"

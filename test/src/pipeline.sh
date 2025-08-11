@@ -98,3 +98,16 @@ python ./src/generate_epitope_restraints.py configure-docking \
 
 # step12 对接
 haddock3 ./registry/ambig_restraints/DLE_DLE1_clonotype94/Skin_celltype_2VXW_B/docking-antibody-antigen_updated.cfg 
+
+# 使用bash命令，批量完成后，继续下面的步骤
+python ./src/docking_processor.py process-docking-results \
+    ./registry/docking_logs/docking_summary_master.csv \
+    --output ./analysis/final_results.csv \
+    --verbose #--dry-run
+
+# 热图展示及prism制图文件
+Rscript ./src/Plot_docking_results.R \
+  -i ./analysis/final_results.csv \
+  -o ./analysis
+    
+    
