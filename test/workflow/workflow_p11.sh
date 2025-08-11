@@ -78,8 +78,13 @@ run_docking() {
     local log_id=$(basename $(dirname $(dirname "$cfg_file")))
     local log_file="$LOG_DIR/${log_id}_${TIMESTAMP}.log"
     
-    # 提取运行目录
-    local run_dir=$(awk -F'=' '/^run_dir/ {gsub(/[[:space:]]+/, "", $2); print $2}' "$cfg_file")
+#    # 提取运行目录
+#    local run_dir=$(awk -F'=' '/^run_dir/ {gsub(/[[:space:]]+/, "", $2); print $2}' "$cfg_file")
+
+     # 提取运行目录（去掉两侧双引号）
+    local run_dir
+    run_dir=$(sed -n 's/^[[:space:]]*run_dir[[:space:]]*=[[:space:]]*\(.*\)[[:space:]]*$/\1/p' "$cfg_file" | sed 's/^["'\'']//;s/["'\'']$//')
+
     local lock_file="$run_dir/.haddock_lock"
     
     # 检查主摘要文件中是否已有记录（双重检查）
