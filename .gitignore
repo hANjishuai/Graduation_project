@@ -5,7 +5,7 @@ result_out/
 run.log
 output/
 src/*.ipynb
-src/readme.*
+#src/readme.*
 test/a*
 test/d*
 test/r*
